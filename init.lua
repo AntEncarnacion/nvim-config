@@ -150,9 +150,14 @@ require('lazy').setup({
   },
 
   {
+    -- Theme inspired by Atom
     'rose-pine/neovim',
+    name = 'rose-pine',
     priority = 1000,
-    ops = {variant = 'moon', disable_italics = true}
+    opts = {
+      variant = 'moon',
+      disable_italics = true
+    },
   },
 
   {
@@ -175,7 +180,9 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-    opts = {},
+    opts = {
+      scope = { enabled = true },
+    },
   },
 
   -- "gc" to comment visual regions/lines
@@ -236,6 +243,9 @@ vim.o.hlsearch = false
 -- Make line numbers default
 vim.wo.number = true
 
+-- Absolute line numbers
+vim.opt.relativenumber = true
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -267,6 +277,7 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+-- Color theme
 vim.cmd.colorscheme 'rose-pine'
 
 -- [[ Basic Keymaps ]]
@@ -382,7 +393,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'html', 'php', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'php', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
