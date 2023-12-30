@@ -150,7 +150,6 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
     'rose-pine/neovim',
     name = 'rose-pine',
     priority = 1000,
@@ -661,6 +660,7 @@ vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
 vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
 vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 
+
 -- [[ Configure indent-blankline ]]
 local highlight = {
     "RainbowRed",
@@ -688,6 +688,7 @@ vim.g.rainbow_delimiters = { highlight = highlight }
 require("ibl").setup { scope = { highlight = highlight } }
 
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
