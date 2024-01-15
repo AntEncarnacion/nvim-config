@@ -206,6 +206,39 @@ require('lazy').setup({
   },
 
   {
+    "debugloop/telescope-undo.nvim",
+    dependencies = { -- note how they're inverted to above example
+      {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+      },
+    },
+    keys = {
+      { -- lazy style key map
+        "<leader>u",
+        "<cmd>Telescope undo<cr>",
+        desc = "undo history",
+      },
+    },
+    opts = {
+      -- don't use `defaults = { }` here, do this in the main telescope spec
+      extensions = {
+        undo = {
+          -- telescope-undo.nvim config, see below
+        },
+        -- no other extensions here, they can have their own spec too
+      },
+    },
+    config = function(_, opts)
+      -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
+      -- configs for us. We won't use data, as everything is in it's own namespace (telescope
+      -- defaults, as well as each extension).
+      require("telescope").setup(opts)
+      require("telescope").load_extension("undo")
+    end,
+  },
+
+  {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
@@ -297,6 +330,12 @@ vim.cmd([[highlight ColorColumn ctermbg=238]])
 
 -- Add _ to word motion
 vim.opt.iskeyword:remove { "_" }
+
+-- Replace Whitespace with Spaces
+local set = vim.opt -- set options
+set.tabstop = 4
+set.softtabstop = 4
+set.shiftwidth = 4
 
 -- [[ Basic Keymaps ]]
 
@@ -413,7 +452,8 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'php', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'php', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
+      'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -685,6 +725,7 @@ end
 vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
   { desc = "Open harpoon window" })
 vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
+vim.keymap.set("n", "<leader>a", function() harpoon:list():remove() end)
 
 vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
 vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
