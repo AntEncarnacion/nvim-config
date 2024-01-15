@@ -295,6 +295,9 @@ vim.o.colorcolumn = "80"
 --vim.api.nvim_set_hl(0, "colorcolumn", { bg = "#1b1b1b" })
 vim.cmd([[highlight ColorColumn ctermbg=238]])
 
+-- Add _ to word motion
+vim.opt.iskeyword:remove { "_" }
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
