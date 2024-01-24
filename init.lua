@@ -722,15 +722,35 @@ local function toggle_telescope(harpoon_files)
   }):find()
 end
 
-vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
-  { desc = "Open harpoon window" })
-vim.keymap.set("n", "<leader>a", function() harpoon:list():append() end)
-vim.keymap.set("n", "<leader>a", function() harpoon:list():remove() end)
+vim.keymap.set("n", "<C-e>",
+  function() toggle_telescope(harpoon:list()) end,
+  { desc = "Open harpoon window" }
+)
+vim.keymap.set("n", "<leader>aa",
+  function() harpoon:list():append() end,
+  { desc = "Append file to harpoon" }
+)
+vim.keymap.set("n", "<leader>ad", function() harpoon:list():remove() end,
+  { desc = "Remove file from harpoon" }
+)
 
-vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
-vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
-vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>ah",
+  function() harpoon:list():select(1) end,
+  { desc = "Switch to file 1 in harpoon" }
+)
+vim.keymap.set("n", "<leader>aj",
+  function() harpoon:list():select(2) end,
+  { desc = "Switch to file 2 in harpoon" }
+)
+vim.keymap.set("n", "<leader>ak",
+  function() harpoon:list():select(3) end,
+  { desc = "Switch to file 3 in harpoon" }
+)
+vim.keymap.set("n", "<leader>al",
+  function() harpoon:list():select(4) end,
+  { desc = "Switch to file 4 in harpoon" }
+)
+
 
 -- Toggle previous & next buffers stored within Harpoon list
 vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
