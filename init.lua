@@ -595,7 +595,7 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -632,7 +632,7 @@ mason_lspconfig.setup_handlers {
       require('lspconfig')[server_name].setup {
         capabilities = capabilities,
         on_attach = on_attach,
-        root_dir = require("lspconfig").util.root_pattern(".git", "package.json", ".svn"),
+        root_dir = require("lspconfig").util.root_pattern(".git", "package.json"),
         settings = servers[server_name],
         filetypes = (servers[server_name] or {}).filetypes,
       }
