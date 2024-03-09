@@ -55,6 +55,7 @@ require('lazy').setup({
     },
   },
 
+  -- Menu for viewing errors
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -291,6 +292,11 @@ require('lazy').setup({
     "m4xshen/hardtime.nvim",
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts = {}
+  },
+
+  -- Color highlight for hexes
+  {
+    "brenoprata10/nvim-highlight-colors",
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -859,6 +865,9 @@ vim.g.rainbow_delimiters = { highlight = highlight }
 require("ibl").setup { scope = { highlight = highlight } }
 
 hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+
+-- [[ Configure Highlight Colors ]]
+require('nvim-highlight-colors').setup {}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
