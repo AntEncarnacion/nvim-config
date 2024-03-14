@@ -293,6 +293,40 @@ require('lazy').setup({
     opts = {}
   },
 
+  {
+    -- sticky scroll
+    "nvim-treesitter/nvim-treesitter-context"
+  },
+
+  {
+    -- DAP here we go again...
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap" }
+  },
+
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-treesitter/nvim-treesitter",
+    }
+  },
+
+  {
+    "nvim-telescope/telescope-dap.nvim",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-telescope/telescope.nvim",
+    }
+  },
+
+  {
+    "williamboman/mason.nvim",
+    "mfussenegger/nvim-dap",
+    "jay-babu/mason-nvim-dap.nvim",
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -322,7 +356,7 @@ vim.wo.number = true
 vim.opt.relativenumber = true
 
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.o.mouse = "a"
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -397,7 +431,11 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
-vim.keymap.set('n', '<leader>b', ":Ex<CR>")
+-- explorer open
+vim.keymap.set('n', '<leader>B', ":Ex<CR>", { desc = "Open explorer" })
+
+-- enable mouse
+vim.keymap.set('n', '<leader>m', ":set mouse=a<CR>", { desc = "Enable mouse" })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -638,20 +676,7 @@ require("mason-null-ls").setup({
   ensure_installed = {
   },
   handlers = {},
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
-          -- on later neovim version, you should use vim.lsp.buf.format({ async = false }) instead
-          vim.lsp.buf.formatting_sync()
-        end,
-      })
-    end
-  end,
+  automatic_installation = {},
 })
 require("null-ls").setup({
   sources = {
@@ -687,8 +712,139 @@ local servers = {
   intelephense = require 'lspconfig'.util.default_config.settings,
 }
 
+-- dap configuration
+require("dapui").setup({
+  controls = {
+    element = "repl",
+    enabled = true,
+    icons = {
+      disconnect = "",
+      pause = "",
+      play = "",
+      run_last = "",
+      step_back = "",
+      step_into = "",
+      step_out = "",
+      step_over = "",
+      terminate = ""
+    }
+  },
+  element_mappings = {},
+  expand_lines = true,
+  floating = {
+    border = "single",
+    mappings = {
+      close = { "q", "<Esc>" }
+    }
+  },
+  force_buffers = true,
+  icons = {
+    collapsed = "",
+    current_frame = "",
+    expanded = ""
+  },
+  layouts = { {
+    elements = { {
+      id = "scopes",
+      size = 0.25
+    }, {
+      id = "breakpoints",
+      size = 0.25
+    }, {
+      id = "stacks",
+      size = 0.25
+    }, {
+      id = "watches",
+      size = 0.25
+    } },
+    position = "left",
+    size = 40
+  }, {
+    elements = { {
+      id = "console",
+      size = 1
+    } },
+    position = "bottom",
+    size = 10
+  } },
+  mappings = {
+    edit = "e",
+    expand = { "<CR>", "<2-LeftMouse>" },
+    open = "o",
+    remove = "d",
+    repl = "r",
+    toggle = "t"
+  },
+  render = {
+    indent = 1,
+    max_value_lines = 100
+  }
+})
+require("nvim-dap-virtual-text").setup({})
+require('mason-nvim-dap').setup({
+  automatic_installation = false,
+  ensure_installed = {},
+  handlers = {
+    function(config)
+      -- all sources with no handler get passed here
+
+      -- Keep original functionality
+      require('mason-nvim-dap').default_setup(config)
+    end,
+    php = function(config)
+      config.configurations = {
+        {
+          type = 'php',
+          request = 'launch',
+          name = 'PHP: Listen for Xdebug',
+          port = 9003,
+        },
+        {
+          name = "Launch currently open script",
+          type = "php",
+          request = "launch",
+          program = "${file}",
+          cwd = "${fileDirname}",
+          port = 0,
+          runtimeArgs = {
+            "-dxdebug.start_with_request=yes"
+          },
+          env = {
+            XDEBUG_MODE = "debug,develop",
+            XDEBUG_CONFIG = "client_port=${port}"
+          }
+        }
+      }
+
+      require('mason-nvim-dap').default_setup(config) -- don't forget this!
+    end,
+  },
+})
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end
+
+vim.keymap.set('n', '<Leader>5', function() require('dap').continue() end, { desc = "Debug: Continue" })
+vim.keymap.set('n', '<Leader>0', function() require('dap').step_over() end, { desc = "Debug: Step Over" })
+vim.keymap.set('n', '<Leader>-', function() require('dap').step_into() end, { desc = "Debug: Step Into" })
+vim.keymap.set('n', '<Leader>\\', function() require('dap').step_out() end, { desc = "Debug: Step Out" })
+vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end, { desc = "Debug: Toggle Breakpoint" })
+vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
+  require('dap.ui.widgets').hover()
+end, { desc = "Debug: Hover Value" })
+
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup({ library = { plugins = { "nvim-dap-ui" }, types = true }, })
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
