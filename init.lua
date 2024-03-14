@@ -848,6 +848,9 @@ vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() e
 vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function()
   require('dap.ui.widgets').hover()
 end, { desc = "Debug: Hover Value" })
+vim.keymap.set({ 'n', 'v' }, '<Leader>dui', function()
+  require('dapui').toggle()
+end, { desc = "Debug: Hover Value" })
 
 -- Setup neovim lua configuration
 require('neodev').setup({ library = { plugins = { "nvim-dap-ui" }, types = true }, })
