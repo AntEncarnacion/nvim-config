@@ -333,6 +333,10 @@ require('lazy').setup({
     "brenoprata10/nvim-highlight-colors",
   },
 
+  {
+    "github/copilot.vim",
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -442,6 +446,8 @@ vim.keymap.set('n', '<leader>B', ":Ex<CR>", { desc = "Open explorer" })
 
 -- enable mouse
 vim.keymap.set('n', '<leader>m', ":set mouse=a<CR>", { desc = "Enable mouse" })
+
+vim.api.nvim_set_keymap('i', '<C-/>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
