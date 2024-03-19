@@ -302,7 +302,7 @@ require('lazy').setup({
   {
     -- DAP here we go again...
     "rcarriga/nvim-dap-ui",
-    dependencies = { "mfussenegger/nvim-dap" }
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
   },
 
   {
@@ -333,9 +333,6 @@ require('lazy').setup({
     "brenoprata10/nvim-highlight-colors",
   },
 
-  {
-    "github/copilot.vim",
-  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
