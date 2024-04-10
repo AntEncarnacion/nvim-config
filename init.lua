@@ -181,6 +181,12 @@ require('lazy').setup({
   },
 
   {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000
+  },
+
+  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -287,12 +293,12 @@ require('lazy').setup({
     build = function() vim.fn["mkdp#util#install"]() end,
   },
 
-  {
-    -- nvim training wheels
-    "m4xshen/hardtime.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    opts = {}
-  },
+  -- {
+  --   -- nvim training wheels
+  --   "m4xshen/hardtime.nvim",
+  --   dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+  --   opts = {}
+  -- },
 
   {
     -- sticky scroll
@@ -331,6 +337,14 @@ require('lazy').setup({
   -- Color highlight for hexes
   {
     "brenoprata10/nvim-highlight-colors",
+  },
+
+  -- Code folding
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async",
+    }
   },
 
 
@@ -1030,6 +1044,23 @@ hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_ex
 
 -- [[ Configure Highlight Colors ]]
 require('nvim-highlight-colors').setup {}
+
+-- [[ Configure code folder nvim-ufo ]]
+
+vim.o.foldcolumn = '0' -- this is for the fold number column
+vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+-- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+
+require('ufo').setup({
+  provider_selector = function(bufnr, filetype, buftype)
+    return { 'treesitter', 'indent' }
+  end
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
