@@ -458,7 +458,7 @@ vim.keymap.set('n', '<leader>B', ":Ex<CR>", { desc = "Open explorer" })
 -- enable mouse
 vim.keymap.set('n', '<leader>m', ":set mouse=a<CR>", { desc = "Enable mouse" })
 
-vim.api.nvim_set_keymap('i', '<C-/>', 'copilot#Accept("<CR>")', { expr = true, silent = true })
+vim.keymap.set("n", "<leader>f", ":lua vim.lsp.buf.format()<CR>", {desc = "Format"})
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
