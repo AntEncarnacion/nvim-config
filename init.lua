@@ -93,7 +93,14 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  {
+    'folke/which-key.nvim',
+    opts = {},
+    dependencies = {
+      { 'echasnovski/mini.icons', version = false },
+    }
+  },
+
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -458,7 +465,7 @@ vim.keymap.set('n', '<leader>B', ":Ex<CR>", { desc = "Open explorer" })
 -- enable mouse
 vim.keymap.set('n', '<leader>m', ":set mouse=a<CR>", { desc = "Enable mouse" })
 
-vim.keymap.set("n", "<leader>f", ":lua vim.lsp.buf.format()<CR>", {desc = "Format"})
+vim.keymap.set("n", "<leader>f", ":lua vim.lsp.buf.format()<CR>", { desc = "Format" })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -781,13 +788,6 @@ require("dapui").setup({
     } },
     position = "left",
     size = 40
-  }, {
-    elements = { {
-      id = "console",
-      size = 1
-    } },
-    position = "bottom",
-    size = 10
   } },
   mappings = {
     edit = "e",
