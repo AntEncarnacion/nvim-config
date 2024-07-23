@@ -215,6 +215,8 @@ require('lazy').setup({
     main = 'ibl',
   },
 
+  'HiPhish/rainbow-delimiters.nvim',
+
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -456,8 +458,8 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- next greatest remap ever : asbjornHaland
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], {desc = "Copy to system clipboard"})
+vim.keymap.set("n", "<leader>Y", [["+Y]], {desc = "Copy to system clipboard Y = y$"})
 
 -- explorer open
 vim.keymap.set('n', '<leader>B', ":Ex<CR>", { desc = "Open explorer" })
@@ -465,7 +467,11 @@ vim.keymap.set('n', '<leader>B', ":Ex<CR>", { desc = "Open explorer" })
 -- enable mouse
 vim.keymap.set('n', '<leader>m', ":set mouse=a<CR>", { desc = "Enable mouse" })
 
-vim.keymap.set("n", "<leader>f", ":lua vim.lsp.buf.format()<CR>", { desc = "Format" })
+vim.keymap.set("n", "<leader>f",
+  function()
+    vim.lsp.buf.format { timeout_ms = 2000 }
+  end,
+  { desc = "Format" })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
