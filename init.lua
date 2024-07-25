@@ -427,8 +427,9 @@ vim.opt.iskeyword:remove { "_" }
 -- Replace Whitespace with Spaces
 local set = vim.opt -- set options
 set.tabstop = 4
-set.softtabstop = 4
 set.shiftwidth = 4
+set.smartindent = true
+set.expandtab = true
 
 -- [[ Basic Keymaps ]]
 
@@ -469,7 +470,7 @@ vim.keymap.set('n', '<leader>m', ":set mouse=a<CR>", { desc = "Enable mouse" })
 
 vim.keymap.set("n", "<leader>f",
   function()
-    vim.lsp.buf.format { timeout_ms = 2000 }
+    vim.lsp.buf.format { timeout_ms = 10000 }
   end,
   { desc = "Format" })
 
