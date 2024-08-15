@@ -177,17 +177,6 @@ require('lazy').setup({
   },
 
   {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    priority = 1000,
-    lazy = false,
-    opts = {
-      variant = 'moon',
-      disable_italics = true
-    },
-  },
-
-  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000
@@ -200,7 +189,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'rose-pine',
+        theme = 'catppuccin',
         component_separators = '|',
         section_separators = '',
       },
@@ -414,7 +403,19 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 
 -- Color theme
-vim.cmd.colorscheme 'rose-pine'
+require("catppuccin").setup({
+    flavour = "auto", -- latte, frappe, macchiato, mocha
+    background = { -- :h background
+        light = "latte",
+        dark = "mocha",
+    },
+    transparent_background = true, -- disables setting the background color.
+    show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+    term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+})
+
+-- setup must be called before loading
+vim.cmd.colorscheme 'catppuccin'
 
 -- Character Column Limit
 vim.o.colorcolumn = "100"
@@ -714,15 +715,10 @@ require("null-ls").setup({
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  gopls = {},
   pyright = {},
   -- rust_analyzer = {},
-  tsserver = {},
-  htmx = {},
   cssls = {},
   jsonls = {},
-  templ = {},
-  tailwindcss = {},
   html = { filetypes = { 'html', 'twig', 'hbs', 'php'} },
 
   lua_ls = {
