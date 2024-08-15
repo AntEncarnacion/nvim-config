@@ -419,8 +419,6 @@ vim.cmd.colorscheme 'catppuccin'
 
 -- Character Column Limit
 vim.o.colorcolumn = "100"
---vim.api.nvim_set_hl(0, "colorcolumn", { bg = "#1b1b1b" })
-vim.cmd([[highlight ColorColumn ctermbg=238]])
 
 -- Add _ to word motion
 vim.opt.iskeyword:remove { "_" }
