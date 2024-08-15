@@ -428,7 +428,10 @@ vim.opt.iskeyword:remove { "_" }
 local set = vim.opt -- set options
 set.tabstop = 4
 set.shiftwidth = 4
+set.softtabstop = 0
 set.expandtab = true
+set.autoindent = true
+set.smartindent = true
 
 -- [[ Basic Keymaps ]]
 
