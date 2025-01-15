@@ -279,32 +279,11 @@ require('lazy').setup({
   },
 
   {
-    "ellisonleao/glow.nvim",
-    config = true,
-    cmd = "Glow"
-  },
-
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function() vim.fn["mkdp#util#install"]() end,
-  },
-
-  -- {
-  --   -- nvim training wheels
-  --   "m4xshen/hardtime.nvim",
-  --   dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-  --   opts = {}
-  -- },
-
-  {
     -- sticky scroll
     "nvim-treesitter/nvim-treesitter-context"
   },
 
   {
-    -- DAP here we go again...
     "rcarriga/nvim-dap-ui",
     dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }
   },
@@ -421,7 +400,7 @@ vim.cmd.colorscheme 'catppuccin'
 vim.o.colorcolumn = "100"
 
 -- Add _ to word motion
-vim.opt.iskeyword:remove { "_" }
+-- vim.opt.iskeyword:remove { "_" }
 
 -- Replace Whitespace with Spaces
 local set = vim.opt -- set options
@@ -659,10 +638,7 @@ local on_attach = function(_, bufnr)
   end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', function()
-    vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
-  end, '[C]ode [A]ction')
-
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -713,10 +689,15 @@ require("null-ls").setup({
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
+  -- gopls = {},
   pyright = {},
   -- rust_analyzer = {},
+  -- tsserver = {},
+  -- htmx = {},
   cssls = {},
   jsonls = {},
+  -- templ = {},
+  -- tailwindcss = {},
   html = { filetypes = { 'html', 'twig', 'hbs', 'php'} },
 
   lua_ls = {
@@ -765,15 +746,12 @@ require("dapui").setup({
   layouts = { {
     elements = { {
       id = "scopes",
-      size = 0.25
+      size = 0.50
     }, {
       id = "breakpoints",
       size = 0.25
     }, {
       id = "stacks",
-      size = 0.25
-    }, {
-      id = "watches",
       size = 0.25
     } },
     position = "left",
